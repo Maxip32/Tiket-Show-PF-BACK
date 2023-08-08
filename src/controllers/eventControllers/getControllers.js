@@ -36,10 +36,10 @@ const getEvent = async (req, res = response) => {
       });
     }
 
-    res.status(200).json({
-      msg: "Evento encontrado",
+    res.status(200).json(
+      
       event,
-    });
+    );
   } catch (error) {
     console.log(error);
     res.status(500).json({
