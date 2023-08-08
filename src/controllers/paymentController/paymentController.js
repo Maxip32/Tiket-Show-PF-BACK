@@ -71,12 +71,12 @@ const captureOrder = async(req,res) => {
         }
     })
     console.log(response.data)
-    return res.redirect('http://localhost:5173/approved')
+    return res.redirect(`${HOST}/approved`)
 }
 
 const cancelOrder = (req,res) => {
 
-    res.redirect('http://localhost:5173/')
+    res.redirect(`${HOST}/`)
     res.send('cancelOrder')
 }
 
