@@ -71,12 +71,12 @@ const captureOrder = async(req,res) => {
         }
     })
     console.log(response.data)
-    return res.redirect(`${HOST}/approved`)
+    return res.redirect(`https://tiket-show-pf.vercel.app/approved`)
 }
 
 const cancelOrder = (req,res) => {
 
-    res.redirect(`${HOST}/`)
+    res.redirect(`https://tiket-show-pf.vercel.app/`)
     res.send('cancelOrder')
 }
 
