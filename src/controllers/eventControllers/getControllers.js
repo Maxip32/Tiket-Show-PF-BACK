@@ -102,95 +102,98 @@ const getEventByName = async (req, res) => {
 };
 
 
-
 const createEvent = async (req, res) => {
-  const {
-    name,
-    description,
-    date,
-    start,
-    end,
-    price,
-    quotas,
-    artistName,
-    genre, // El campo debe ser 'genre', no 'genres'
-    image,
-    city,
-    address,
-  } = req.body;
 
-  try {
-    let eventExis = await Event.findOne({
-      where: { name },
-    });
+    const {
+        name,
+        description,
+        date,
+        start,
+        end,
+        price,
+        quotas,
+        artistName,
+        genre, // El campo debe ser 'genre', no 'genres'
+        image,
+        city,
+        address,
+    } = req.body;
 
-    if (eventExis) {
-      return res.status(400).json({
-        msg: "El evento ya existe con ese nombre",
-      });
+    try {
+        let eventExis = await Event.findOne({
+            where: { name },
+        });
+
+        if (eventExis) {
+            return res.status(400).json({
+                msg: 'El evento ya existe con ese nombre',
+            });
+        }
+
+        const artist = await Artist.findOne({
+            where: artistName , // Usar la propiedad 'name'
+        });
+
+        const genresDb = await Genre.findAll({
+            where: { name: genre }, // Usar 'genre' directamente sin map
+        });
+
+        let cityDb = await City.findOne({
+            where: { name: city },
+        });
+
+        if (!genresDb || genresDb.length === 0) {
+            return res.status(400).json({
+                msg: 'El genero no existe',
+            });
+        }
+
+        if (!artist) {
+            return res.status(404).json({
+                msg: 'No se encontro artista con ese nombre',
+            });
+        }
+        
+        if (!cityDb) {
+            cityDb = await City.create({ name: city });
+        }
+
+        const event = await Event.create({
+            name,
+            description,
+            date,
+            start,
+            end,
+            price,
+            quotas,
+            genre,
+            image,
+            address,
+            city,
+        });
+
+        await event.addArtist(artist);
+        await event.addGenres(genresDb); // Asegúrate de que la relación se llame 'addGenres'
+
+        res.status(201).json({
+            msg: 'Evento creado',
+            event,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Por favor hable con el administrador',
+
+        });
     }
+
 
     const artist = await Artist.findOne({
       where: artistName, // Usar la propiedad 'name'
     });
 
-    const genresDb = await Genre.findAll({
-      where: { name: genre }, // Usar 'genre' directamente sin map
-    });
-
-    let cityDb = await City.findOne({
-      where: { name: city },
-    });
-
-    if (!genresDb || genresDb.length === 0) {
-      return res.status(400).json({
-        msg: "El genero no existe",
-      });
-    }
-
-    if (!artist) {
-      return res.status(404).json({
-        msg: "No se encontro artista con ese nombre",
-      });
-    }
-
-    if (!cityDb) {
-      cityDb = await City.create({ name: city });
-    }
-
-    const event = await Event.create({
-    name,
-    description,
-    date,
-    start,
-    end,
-    price,
-    quotas,
-    artistName,
-    genre, // El campo debe ser 'genre', no 'genres'
-    image,
-    city,
-    address,
-    });
-
-    await event.addArtist(artist);
-    await event.addGenres(genresDb); // Asegúrate de que la relación se llame 'addGenres'
-
-    res.status(201).json({
-      msg: "Evento creado",
-      event,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      msg: "Por favor hable con el administrador",
-    });
   }
-
-  const artist = await Artist.findOne({
-    where: artistName, // Usar la propiedad 'name'
-  });
-};
 
 const deleteEvent =async (req, res = response) => {
     const { id } = req.params;
