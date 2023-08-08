@@ -71,7 +71,7 @@ const captureOrder = async(req,res) => {
         }
     })
     console.log(response.data)
-    return res.redirect(`https://tiket-show-pf.vercel.app/approved`)
+    return res.redirect(`https://startling-dieffenbachia-138c0a.netlify.app/approved`)
 }
 
 const cancelOrder = (req,res) => {
