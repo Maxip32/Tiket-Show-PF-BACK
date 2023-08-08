@@ -23,8 +23,8 @@ const createOrder = async(req,res) => {
                 brand_name: 'ticketshow.com',
                 landing_page: 'LOGIN',
                 user_action: 'PAY_NOW',
-                return_url: `${HOST}/capture-order`,
-                cancel_url: `${HOST}/cancel-order`,
+                return_url: `https://tiket-show-pf.vercel.app/capture-order`,
+                cancel_url: `https://tiket-show-pf.vercel.app/cancel-order`,
             }
         }
     
