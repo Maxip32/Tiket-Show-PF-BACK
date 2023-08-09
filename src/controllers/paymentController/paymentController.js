@@ -71,7 +71,7 @@ const captureOrder = async(req,res) => {
         }
     })
     console.log(response.data)
-    return res.redirect(`https://startling-dieffenbachia-138c0a.netlify.app/approved`)
+    return res.redirect(`${HOST}/approved`)
 }
 
 const cancelOrder = (req,res) => {
